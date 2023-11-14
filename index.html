@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+ 
+    <input id="title" type="text" placeholder="title">
+    <input id="date" type="date" placeholder="date">
+    <button onclick="AddEvent()">Add Event</button>   
+    <button onclick="UpdateEvent()">Update Event</button>
+    <button onclick="DeleteEvent()">Delete Event</button>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth'
+            });
+            calendar.render();
+        });
+
+        function AddEvent() {
+            const title = document.querySelector("#title").value;
+            const date = document.querySelector("#date").value;
+            axios.post("https://eventsapi.onrender.com/api/Events", {
+                "title": title,
+                "date": date
+            }).then((res) => {
+                console.log(res.data);
+            });
+        }
+        function UpdateEvent() {
+            const id = 9;
+            const title = "update event";
+            const date = "30-08-23";
+            axios.put(`https://eventsapi.onrender.com/api/Events/${id}`, {
+                "title": title,
+                "date": date
+            }).then(res => {
+                console.log(res.data);
+            });
+        }
+        function DeleteEvent() {
+            const id = 2;
+            axios.delete(`https://eventsapi.onrender.com/api/Events/${id}`).then((res) => {
+                console.log(res.data);
+            });
+        }
+
+        // הקוד שכתוב על הדף ולא עובד
+// document.addEventListener("DOMContentLoaded",function(){
+//     axios.get("https://myserver.com/events").then((res)=>{
+//     var calendarEl=document.getElementById("calendar");
+//     var calendar=new FullCalendar.Calendar(calendarEl,{
+//         initialView:"dayGridMonth",
+//         events:res.data,
+//     });
+//     calendar.render();
+// });
+// });
+    </script>
+
+
+</head>
+
+<body>
+    <div id='calendar'></div>
+
+</body>
+
+</html>
